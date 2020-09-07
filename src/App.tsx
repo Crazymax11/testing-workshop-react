@@ -7,6 +7,7 @@ import thunk from "redux-thunk";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { UsersContainer } from "./pages/usersList";
+import { UserContainer} from './pages/user'
 import { Container } from "@material-ui/core";
 
 const store = createStore(
@@ -23,8 +24,8 @@ function App() {
             <Route path="/" exact>
               <UsersContainer />
             </Route>
-            <Route path="/:id">user</Route>
-          </Switch>
+            <Route path="/:id"><UserContainer/></Route>
+          </Switch> 
         </Router>
       </Container>
     </Provider>

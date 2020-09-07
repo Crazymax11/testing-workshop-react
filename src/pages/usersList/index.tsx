@@ -12,13 +12,16 @@ import {
   CardActions,
   Box,
   Input,
+  Avatar
 } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 
 type Props = {
   loadUsers(): void;
   users: User[];
   isLoading: boolean;
   failed?: string;
+
 };
 export const Users = (props: Props) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -30,6 +33,9 @@ export const Users = (props: Props) => {
   }, []);
 
   const [search, setSearch] = useState("");
+
+  const history = useHistory();
+
   if (props.isLoading) {
     return <div>loading</div>;
   }
@@ -59,18 +65,14 @@ export const Users = (props: Props) => {
             return (
               <Grid item xs={4}>
                 <Card>
-                  <CardHeader title={user.name} subheader={user.id} />
+                  <CardHeader title={user.name} subheader={user.id}/>
                   <CardContent>
-                    <div>
-                      <div>{user.name}</div>
-                      <div>{user.username}</div>
-                      <div>{user.email}</div>
-                      <div>{user.address}</div>
-                      <div>{user.company}</div>
-                    </div>
+                    <Avatar>{user.name.slice(0,1)}</Avatar>
                   </CardContent>
                   <CardActions>
-                    <Button variant="contained" color="primary">
+                    <Button variant="contained" color="primary" onClick={() => {
+                      history.push(`/${user.id}`)
+                    }}>
                       Открыть
                     </Button>
                   </CardActions>

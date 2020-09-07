@@ -117,6 +117,10 @@ export const userReducer = (state: UsersState = initialState, action: Action): U
           ...state.currentUser,
           isLoading: false,
         },
+        users: {
+          ...state.users,
+          [state.currentUser.userId]: action.payload
+        }
       };
     }
     case "currentUserLoadingFailed": {
