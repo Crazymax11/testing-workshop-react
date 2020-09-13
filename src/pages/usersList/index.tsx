@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { User } from "../../stores/users";
 import { RootState, RootDispatch } from "../../stores";
-import { loadUsers } from "../../actions/actions";
+import { loadUsers } from "../../actions";
 import {
   Grid,
   Button,
@@ -12,7 +12,7 @@ import {
   CardActions,
   Box,
   Input,
-  Avatar
+  Avatar,
 } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 
@@ -21,8 +21,8 @@ type Props = {
   users: User[];
   isLoading: boolean;
   failed?: string;
-
 };
+
 export const Users = (props: Props) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
@@ -65,14 +65,18 @@ export const Users = (props: Props) => {
             return (
               <Grid item xs={4}>
                 <Card>
-                  <CardHeader title={user.name} subheader={user.id}/>
+                  <CardHeader title={user.name} subheader={user.id} />
                   <CardContent>
-                    <Avatar>{user.name.slice(0,1)}</Avatar>
+                    <Avatar>{user.name.slice(0, 1)}</Avatar>
                   </CardContent>
                   <CardActions>
-                    <Button variant="contained" color="primary" onClick={() => {
-                      history.push(`/${user.id}`)
-                    }}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {
+                        history.push(`/${user.id}`);
+                      }}
+                    >
                       Открыть
                     </Button>
                   </CardActions>

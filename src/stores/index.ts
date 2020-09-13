@@ -1,17 +1,10 @@
 import thunk, { ThunkDispatch } from "redux-thunk";
-import { Action, createStore, combineReducers, applyMiddleware } from 'redux';
-import { StateType, ActionType } from 'typesafe-actions';
+import { Action, createStore, combineReducers, applyMiddleware } from "redux";
+import { StateType } from "typesafe-actions";
 import { userReducer } from "./users";
 
-
-
-
-const reducer =combineReducers({ users: userReducer })
-export const store = createStore(
-    reducer,
-    applyMiddleware(thunk)
-  );
-
+const reducer = combineReducers({ users: userReducer });
+export const store = createStore(reducer, applyMiddleware(thunk));
 
 export type ReducerState = StateType<typeof reducer>;
 export type RootState = ReducerState;
