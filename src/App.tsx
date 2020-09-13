@@ -1,7 +1,5 @@
 import React from "react";
 import { createStore, combineReducers, applyMiddleware } from "redux";
-import logo from "./logo.svg";
-import "./App.css";
 import { userReducer } from "./stores/users";
 import thunk from "redux-thunk";
 import { Provider } from "react-redux";

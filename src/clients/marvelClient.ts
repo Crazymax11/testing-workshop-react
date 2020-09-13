@@ -5,7 +5,7 @@ export class MarvelClient {
 
   constructor() {
     this.http = axios.create({
-      baseURL: "https://developer.marvel.com",
+      baseURL: "https://gateway.marvel.com/v1/public",
       params: {
         apikey: process.env.REACT_APP_MARVEL_API_KEY,
       },
