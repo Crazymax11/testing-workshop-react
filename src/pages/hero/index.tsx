@@ -45,7 +45,7 @@ function Hero({ hero, status, removeHero, fetchHero }: HeroProps) {
     };
   }, [id, fetchHero, removeHero]);
 
-  if (status === "loading") {
+  if (status !== "loaded") {
     return (
       <Grid
         container

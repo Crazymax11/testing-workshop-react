@@ -90,15 +90,15 @@ function Heroes({ heroes, status, fetchHeroes }: HeroesProps) {
   let classes = useStyles();
 
   let [searchQuery, setSearchQuery] = React.useState("");
-  let heroesList = heroes?.filter((hero) =>
-    hero.name.toLowerCase().includes(searchQuery.toLocaleLowerCase())
+  let heroesList = heroes.filter((hero) =>
+    hero.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   React.useEffect(() => {
     fetchHeroes();
   }, [fetchHeroes]);
 
-  if (status === "loading") {
+  if (status !== "loaded") {
     return (
       <Grid
         container
