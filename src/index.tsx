@@ -4,10 +4,6 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
-import { MarvelClient } from "./clients/marvelClient";
-const marvelClient = new MarvelClient();
-marvelClient.getHeroes().then(console.log);
-
 ReactDOM.render(
   <React.StrictMode>
     <App />

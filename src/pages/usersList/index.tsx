@@ -104,6 +104,7 @@ function mapDispatchToProps(dispatch: RootDispatch) {
     loadUsers: () => dispatch(loadUsers()),
   };
 }
+
 export const UsersContainer = connect(
   mapStateToProps,
   mapDispatchToProps

@@ -1,5 +1,14 @@
-import { MarvelClient } from "../clients/marvelClient";
+import { RootDispatch, GetRootState, ThunkExtraArgument } from "../stores";
 
-const marvelClient = new MarvelClient();
-
-export const loadHeroes = () => async () => {};
+export const fetchHeroes = () => async (
+  dispatch: RootDispatch,
+  _getState: GetRootState,
+  { marvelClient }: ThunkExtraArgument
+) => {
+  try {
+    const { data } = await marvelClient.getCharacters();
+    dispatch({ type: "fetchHeroesSuccess", payload: data });
+  } catch (error) {
+    dispatch({ type: "fetchHeroesError" });
+  }
+};
