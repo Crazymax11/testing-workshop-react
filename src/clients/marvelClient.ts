@@ -14,7 +14,11 @@ export class MarvelClient {
   }
 
   getCharacters() {
-    return this.http.get<Characters>("/characters");
+    return this.http.get<Characters>("/characters", {
+      params: {
+        limit: 50,
+      },
+    });
   }
 
   getCharacter(id: string) {

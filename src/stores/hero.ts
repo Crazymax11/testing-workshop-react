@@ -1,44 +1,28 @@
+import { createReducer, ActionType } from "typesafe-actions";
 import { Character } from "../marvel-api";
+import * as heroActions from "../actions/hero";
 
-type Action =
-  | {
-      type: "fetchHeroStart";
-    }
-  | {
-      type: "fetchHeroSuccess";
-      payload: Character;
-    }
-  | {
-      type: "removeHero";
-    };
+type HeroAction = ActionType<typeof heroActions>;
 
 type HeroState = {
-  hero: Character["data"]["results"][0] | null;
+  status: "idle" | "loading" | "loaded" | "error";
+  item: Character["data"]["results"][0] | null;
 };
 
 const initialState: HeroState = {
-  hero: null,
+  status: "idle",
+  item: null,
 };
 
-export function heroReducer(
-  state: HeroState = initialState,
-  action: Action
-): HeroState {
-  switch (action.type) {
-    case "fetchHeroSuccess": {
-      return {
-        ...state,
-        hero: action.payload.data.results[0],
-      };
-    }
-    case "removeHero": {
-      return {
-        ...state,
-        hero: null,
-      };
-    }
-    default: {
-      return state;
-    }
-  }
-}
+export const heroReducer = createReducer<HeroState, HeroAction>(initialState, {
+  removeHero: (_state, _action) => initialState,
+  fetchHeroStart: (state, _action) => ({
+    ...state,
+    status: "loading",
+  }),
+  fetchHeroSuccess: (state, action) => ({
+    ...state,
+    item: action.payload.data.results[0],
+    status: "loaded",
+  }),
+});
