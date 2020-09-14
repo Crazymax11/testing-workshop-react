@@ -19,10 +19,10 @@ function mapDispatchToProps(dispatch: RootDispatch) {
 type Props = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps>;
 
-function Heroes({ heroes, fetchHeroes: loadHeroes }: Props) {
+function Heroes({ heroes, fetchHeroes }: Props) {
   React.useEffect(() => {
-    loadHeroes();
-  }, [loadHeroes]);
+    fetchHeroes();
+  }, [fetchHeroes]);
 
   return (
     <>
