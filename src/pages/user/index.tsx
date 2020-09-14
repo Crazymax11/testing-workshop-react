@@ -1,15 +1,14 @@
 import React, { useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
 import { RootState } from "../../stores";
-import { connect, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { UsersState } from "../../stores/users";
 import { useParams, useHistory } from "react-router-dom";
-import { loadUser } from "../../actions/actions";
+import { loadUser } from "../../actions";
 import {
   Card,
   CardHeader,
   CardContent,
-  Avatar,
   CardActions,
   Button,
 } from "@material-ui/core";
@@ -73,7 +72,7 @@ export const UserSkeleton = () => {
 };
 
 export const UserContainer = () => {
-  let { id } = useParams();
+  let { id } = useParams<{ id: string }>();
 
   const isLoading = useSelector(
     (state: RootState) => state.users.currentUser.isLoading
