@@ -4,12 +4,14 @@ import { StateType } from "typesafe-actions";
 import { MarvelClient } from "../clients/marvelClient";
 import { userReducer } from "./users";
 import { heroesReducer } from "./heroes";
+import { heroReducer } from "./hero";
 
 const marvelClient = new MarvelClient();
 
 export const reducer = combineReducers({
   users: userReducer,
   heroes: heroesReducer,
+  hero: heroReducer,
 });
 
 export const store = createStore(

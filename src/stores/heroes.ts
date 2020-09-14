@@ -1,4 +1,4 @@
-import { CharactersResponse } from "../marvel-api";
+import { Characters } from "../marvel-api";
 
 type Action =
   | {
@@ -6,11 +6,11 @@ type Action =
     }
   | {
       type: "fetchHeroesSuccess";
-      payload: CharactersResponse;
+      payload: Characters;
     };
 
 type HeroesState = {
-  heroes: CharactersResponse["data"]["results"];
+  heroes: Characters["data"]["results"];
 };
 
 const initialState = {

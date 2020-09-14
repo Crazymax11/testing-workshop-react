@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from "axios";
-import { CharactersResponse } from "../marvel-api";
+import { Characters, Character } from "../marvel-api";
 
 export class MarvelClient {
   private http: AxiosInstance;
@@ -14,6 +14,10 @@ export class MarvelClient {
   }
 
   getCharacters() {
-    return this.http.get<CharactersResponse>("/characters");
+    return this.http.get<Characters>("/characters");
+  }
+
+  getCharacter(id: string) {
+    return this.http.get<Character>(`/characters/${id}`);
   }
 }
