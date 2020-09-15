@@ -1,7 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { Grid, Container, Paper, TextField } from "@material-ui/core";
+import {
+  Grid,
+  Container,
+  Paper,
+  TextField,
+  CircularProgress,
+} from "@material-ui/core";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 
 import { Characters } from "../../marvel-api";
@@ -101,7 +107,20 @@ export function Heroes({
   }, [fetchHeroes]);
 
   if (status !== "loaded") {
-    return <div>список загружается</div>;
+    return (
+      <Grid
+        container
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justify="center"
+        style={{ minHeight: "100vh" }}
+      >
+        <Grid item xs={3}>
+          <CircularProgress size={100} />
+        </Grid>
+      </Grid>
+    );
   }
 
   let content =

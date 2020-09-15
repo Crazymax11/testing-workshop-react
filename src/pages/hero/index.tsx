@@ -81,7 +81,7 @@ export function Hero({ hero, status, removeHero, fetchHero }: HeroProps) {
           <CardHeader title={hero?.name} subheader={hero?.modified} />
           <CardContent>{hero?.description}</CardContent>
           <CardActions>
-            <Link to="/heroes">
+            <Link to="/">
               <Button variant="contained" color="primary">
                 Назад к списку
               </Button>
