@@ -17,6 +17,7 @@ export class MarvelClient {
     return this.http.get<Characters>("/characters", {
       params: {
         limit: 50,
+        offset: 274,
       },
     });
   }
