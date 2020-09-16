@@ -1,70 +1,74 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
-  AppBar,
-  Container,
   Grid,
+  Container,
+  Paper,
+  TextField,
   CircularProgress,
-  Toolbar,
-  InputBase,
-  Typography,
 } from "@material-ui/core";
-import { Search as SearchIcon } from "@material-ui/icons";
-import { fade, makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
+
+import { Characters } from "../../marvel-api";
 import { RootState, RootDispatch } from "../../stores";
 import { fetchHeroes } from "../../actions";
 
-const useStyles = makeStyles((theme) => ({
+const CssTextField = withStyles({
   root: {
-    marginBottom: "20px",
-  },
-  title: {
-    flexGrow: 1,
-    display: "none",
-    [theme.breakpoints.up("sm")]: {
-      display: "block",
-    },
-  },
-  search: {
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(1),
-      width: "auto",
-    },
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  inputRoot: {
-    color: "inherit",
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      width: "12ch",
-      "&:focus": {
-        width: "20ch",
+    "& .MuiOutlinedInput-root": {
+      "&.Mui-focused fieldset": {
+        borderColor: "black",
       },
     },
   },
-}));
+})(TextField);
+
+const useStyles = makeStyles({
+  header: {
+    margin: "20px 0",
+  },
+
+  card: {
+    overflow: "hidden",
+    position: "relative",
+  },
+
+  backdrop: {
+    fontSize: "2rem",
+    position: "absolute",
+    padding: "0.5em",
+    textAlign: "center",
+    fontWeight: 700,
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    opacity: 0,
+    color: "white",
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    transition: "1s",
+  },
+
+  backdropHover: {
+    opacity: 1,
+  },
+
+  cardImage: {
+    width: "100%",
+    display: "block",
+    transition: "1s",
+  },
+
+  cardHover: {
+    transform: "scale(1.15)",
+  },
+
+  notFound: {
+    fontSize: "3rem",
+    fontWeight: 600,
+  },
+});
 
 function mapStateToProps(state: RootState) {
   return {
@@ -83,10 +87,19 @@ function mapDispatchToProps(dispatch: RootDispatch) {
 
 type InjectedProps = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps>;
-type HeroesProps = InjectedProps;
 
-function Heroes({ heroes, status, fetchHeroes }: HeroesProps) {
-  let { url } = useRouteMatch();
+type OwnProps = {
+  onHeroOpen?: (id: number) => void;
+};
+
+type HeroesProps = InjectedProps & OwnProps;
+
+export function Heroes({
+  heroes,
+  status,
+  fetchHeroes,
+  onHeroOpen,
+}: HeroesProps) {
   let classes = useStyles();
 
   let [searchQuery, setSearchQuery] = React.useState("");
@@ -97,6 +110,30 @@ function Heroes({ heroes, status, fetchHeroes }: HeroesProps) {
   React.useEffect(() => {
     fetchHeroes();
   }, [fetchHeroes]);
+
+  if (status === "error") {
+    return (
+      <Grid
+        container
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justify="center"
+        style={{ minHeight: "100vh" }}
+      >
+        <Grid item>
+          <div>
+            <img
+              src="https://i.redd.it/wv16ryuhry841.png"
+              width="500"
+              alt="error"
+            />
+            <div>Не смогли загрузить персонажей</div>
+          </div>
+        </Grid>
+      </Grid>
+    );
+  }
 
   if (status !== "loaded") {
     return (
@@ -115,51 +152,110 @@ function Heroes({ heroes, status, fetchHeroes }: HeroesProps) {
     );
   }
 
+  let content =
+    heroesList.length === 0 ? (
+      <Grid
+        container
+        spacing={1}
+        direction="row"
+        alignItems="center"
+        justify="center"
+      >
+        <Grid item>
+          <img
+            src="https://officialpsds.com/imageview/74/9l/749lnl_large.png?1529388941"
+            alt="Hero Not Found"
+          />
+        </Grid>
+        <Grid item className={classes.notFound}>
+          Ничего не нашли{" "}
+          <span role="img" aria-label="not-found-man">
+            🤷‍♂️
+          </span>
+        </Grid>
+      </Grid>
+    ) : (
+      <Grid container spacing={3} direction="row" wrap="wrap">
+        {heroesList.map((hero) => (
+          <HeroCard key={hero.id} hero={hero} onHeroOpen={onHeroOpen} />
+        ))}
+      </Grid>
+    );
+
   return (
-    <div>
-      <AppBar position="static" className={classes.root}>
-        <Toolbar>
-          <Typography className={classes.title} variant="h6" noWrap>
-            React Testing Workshop
-          </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
+    <Container>
+      <header className={classes.header}>
+        <Grid
+          container
+          direction="row"
+          justify="space-between"
+          alignItems="center"
+        >
+          <Grid item xs={8}>
+            <img
+              height="56"
+              src="https://vignette.wikia.nocookie.net/xmenmovies/images/5/5f/Marvel.jpg/revision/latest?cb=20120224113024"
+              alt="Marvel Logo"
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <CssTextField
+              fullWidth
+              variant="outlined"
               value={searchQuery}
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
               onChange={(e) => setSearchQuery(e.target.value)}
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
             />
-          </div>
-        </Toolbar>
-      </AppBar>
-      <Container>
-        <Grid container spacing={3}>
-          {heroesList.length > 0 ? (
-            heroesList.map((hero) => (
-              <Grid item key={hero.id}>
-                <Link to={`${url}/${hero.id}`}>
-                  <div>{hero.name}</div>
-                  <img
-                    src={`${hero.thumbnail.path}/portrait_xlarge.${hero.thumbnail.extension}`}
-                    alt={hero.name}
-                  />
-                </Link>
-              </Grid>
-            ))
-          ) : (
-            <div>Ничего не найдено</div>
-          )}
+          </Grid>
         </Grid>
-      </Container>
-    </div>
+      </header>
+
+      {content}
+    </Container>
   );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Heroes);
+export const HeroesContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Heroes);
+
+function HeroCard({
+  hero,
+  onHeroOpen,
+}: {
+  hero: Characters["data"]["results"][0];
+  onHeroOpen?: (id: number) => void;
+}) {
+  let classes = useStyles();
+  let [showName, setShowName] = React.useState(false);
+
+  let imgClassName = classes.cardImage;
+  let backdropClassName = classes.backdrop;
+
+  if (showName) {
+    imgClassName += ` ${classes.cardHover}`;
+    backdropClassName += ` ${classes.backdropHover}`;
+  }
+
+  return (
+    <Grid item xs={3}>
+      <Link to={`/heroes/${hero.id}`} onClick={() => onHeroOpen?.(hero.id)}>
+        <Paper
+          elevation={3}
+          className={classes.card}
+          onMouseEnter={() => setShowName(true)}
+          onMouseLeave={() => setShowName(false)}
+        >
+          <img
+            className={imgClassName}
+            src={`${hero.thumbnail.path}/portrait_fantastic.${hero.thumbnail.extension}`}
+            alt={hero.name}
+          />
+          <div className={backdropClassName}>{hero.name}</div>
+        </Paper>
+      </Link>
+    </Grid>
+  );
+}

@@ -35,7 +35,7 @@ type InjectedProps = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps>;
 type HeroProps = InjectedProps;
 
-function Hero({ hero, status, removeHero, fetchHero }: HeroProps) {
+export function Hero({ hero, status, removeHero, fetchHero }: HeroProps) {
   let { id } = useParams<{ id: string }>();
 
   React.useEffect(() => {
@@ -81,7 +81,7 @@ function Hero({ hero, status, removeHero, fetchHero }: HeroProps) {
           <CardHeader title={hero?.name} subheader={hero?.modified} />
           <CardContent>{hero?.description}</CardContent>
           <CardActions>
-            <Link to="/heroes">
+            <Link to="/">
               <Button variant="contained" color="primary">
                 Назад к списку
               </Button>
@@ -93,4 +93,4 @@ function Hero({ hero, status, removeHero, fetchHero }: HeroProps) {
   );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Hero);
+export const HeroContainer = connect(mapStateToProps, mapDispatchToProps)(Hero);

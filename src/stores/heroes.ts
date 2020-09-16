@@ -26,5 +26,9 @@ export const heroesReducer = createReducer<HeroesState, HeroesAction>(
       items: action.payload,
       status: "loaded",
     }),
+    fetchHeroesError: (state, action) => ({
+      ...state,
+      status: "error",
+    }),
   }
 );
