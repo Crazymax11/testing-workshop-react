@@ -63,6 +63,11 @@ const useStyles = makeStyles({
   cardHover: {
     transform: "scale(1.15)",
   },
+
+  notFound: {
+    fontSize: "3rem",
+    fontWeight: 600,
+  },
 });
 
 function mapStateToProps(state: RootState) {
@@ -106,6 +111,30 @@ export function Heroes({
     fetchHeroes();
   }, [fetchHeroes]);
 
+  if (status === "error") {
+    return (
+      <Grid
+        container
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justify="center"
+        style={{ minHeight: "100vh" }}
+      >
+        <Grid item>
+          <div>
+            <img
+              src="https://i.redd.it/wv16ryuhry841.png"
+              width="500"
+              alt="error"
+            />
+            <div>Не смогли загрузить персонажей</div>
+          </div>
+        </Grid>
+      </Grid>
+    );
+  }
+
   if (status !== "loaded") {
     return (
       <Grid
@@ -138,7 +167,12 @@ export function Heroes({
             alt="Hero Not Found"
           />
         </Grid>
-        <Grid item>Ничего не нашли</Grid>
+        <Grid item className={classes.notFound}>
+          Ничего не нашли{" "}
+          <span role="img" aria-label="not-found-man">
+            🤷‍♂️
+          </span>
+        </Grid>
       </Grid>
     ) : (
       <Grid container spacing={3} direction="row" wrap="wrap">
