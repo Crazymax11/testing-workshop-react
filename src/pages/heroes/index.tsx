@@ -156,7 +156,7 @@ export function Heroes({
     heroesList.length === 0 ? (
       <Grid
         container
-        spacing={1}
+        spacing={4}
         direction="row"
         alignItems="center"
         justify="center"
@@ -191,9 +191,9 @@ export function Heroes({
           justify="space-between"
           alignItems="center"
         >
-          <Grid item xs={8}>
+          <Grid item lg={3}>
             <img
-              height="56"
+              height="90"
               src="https://vignette.wikia.nocookie.net/xmenmovies/images/5/5f/Marvel.jpg/revision/latest?cb=20120224113024"
               alt="Marvel Logo"
             />
