@@ -16,6 +16,7 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/redux": "^3.6.0",
     "axios": "^0.20.0",
+    "msw": "^0.21.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-loading-skeleton": "^2.1.1",

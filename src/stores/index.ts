@@ -12,10 +12,12 @@ export const reducer = combineReducers({
   hero: heroReducer,
 });
 
-export const store = createStore(
-  reducer,
-  applyMiddleware(thunk.withExtraArgument({ marvelClient }))
-);
+export const createLocalStore = () =>
+  createStore(
+    reducer,
+    applyMiddleware(thunk.withExtraArgument({ marvelClient }))
+  );
+export const store = createLocalStore();
 
 export type ReducerState = StateType<typeof reducer>;
 export type RootState = ReducerState;

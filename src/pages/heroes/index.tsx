@@ -253,7 +253,7 @@ function HeroCard({
             src={`${hero.thumbnail.path}/portrait_fantastic.${hero.thumbnail.extension}`}
             alt={hero.name}
           />
-          <div className={backdropClassName}>{hero.name}</div>
+          <div data-testid="heroname" className={backdropClassName}>{hero.name}</div>
         </Paper>
       </Link>
     </Grid>
