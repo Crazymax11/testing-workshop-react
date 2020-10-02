@@ -63,6 +63,7 @@
     "@storybook/react": "^6.0.22",
     "babel-loader": "^8.1.0",
     "loki": "^0.25.1",
+    "msw": "^0.21.2",
     "react-is": "^16.13.1"
   },
   "loki": {
