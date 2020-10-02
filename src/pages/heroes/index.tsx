@@ -128,7 +128,7 @@ export function Heroes({
               width="500"
               alt="error"
             />
-            <div>Не смогли загрузить персонажей</div>
+            <div>Упс :(</div>
           </div>
         </Grid>
       </Grid>
